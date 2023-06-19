@@ -2,23 +2,27 @@
 import meow from 'meow';
 import { nodeModulesCompare } from '../nodeModulesCompare';
 
+
 const cli = meow({
   importMeta: import.meta,
   flags: {
-    inputChanged: {
+    inputFile: {
       isRequired: true,
       type: 'string',
     },
-    inputOriginal: {
-      isRequired: true,
+    inputFileWithChanges: {
+      type: 'string',
+    },
+    outputDirectory: {
       type: 'string',
     },
   },
 });
 
-const { inputChanged, inputOriginal } = cli.flags;
+const { inputFile, inputFileWithChanges, outputDirectory } = cli.flags;
 
 nodeModulesCompare({
-  inputChanged,
-  inputOriginal,
+  inputFile,
+  inputFileWithChanges,
+  outputDirectory,
 });
