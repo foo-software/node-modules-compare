@@ -1,0 +1,46 @@
+{
+  "name": "@foo-software/node-modules-compare",
+  "description": "A tool to compare imported `node_modules` existence and size from one build to another",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foo-software/node-modules-compare.git"
+  },
+  "bin": "dist/bin/nodeModulesCompare.js",
+  "scripts": {
+    "node-modules-compare": "ts-node-esm --experimental-specifier-resolution=node src/bin/nodeModulesCompare.ts",
+    "build": "tsc",
+    "lint": "eslint",
+    "prettier": "prettier --write '**/*.{ts,tsx}'",
+    "prepare": "husky install",
+    "test": "jest --passWithNoTests"
+  },
+  "type": "module",
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.17",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "eslint": "^8.30.0",
+    "eslint-config-next": "^13.0.7",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^27.1.7",
+    "husky": "^8.0.2",
+    "jest": "^29.3.1",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "meow": "^11.0.0"
+  }
+}
