@@ -3,6 +3,10 @@ export interface InputResult {
   files: Record<string, { size: number }>;
 }
 
+export interface InputFileContent {
+  results: InputResult[];
+}
+
 export interface ModuleItem {
   bundleDependants: string[];
   size: number;
@@ -15,3 +19,8 @@ export interface ModuleItemWithId extends ModuleItem {
 export type ModuleCollection = Record<string, ModuleItem>;
 
 export type ModuleCollectionWithIds = Record<string, ModuleItemWithId>;
+
+export interface NodeModulesCompareResult {
+  modules: ModuleCollection;
+  modulesWithChanges?: ModuleCollection;
+}

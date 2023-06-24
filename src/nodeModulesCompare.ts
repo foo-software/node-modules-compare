@@ -1,8 +1,8 @@
-import fs from 'node:fs/promises';
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
+import { getInputFileContent } from './lib/getInputFileContent';
 import { getModules } from './lib/getModules';
-import type { InputResult, ModuleCollection } from './types';
+import type { ModuleCollection, NodeModulesCompareResult } from './types';
 
 export const nodeModulesCompare = async ({
   inputFile,
@@ -12,36 +12,21 @@ export const nodeModulesCompare = async ({
   inputFile: string;
   inputFileWithChanges?: string;
   outputDirectory?: string;
-}): Promise<ModuleCollection> => {
+}): Promise<NodeModulesCompareResult> => {
   const currentWorkingDirectoryPath = process.cwd();
 
-  const inputFilePath = path.resolve(currentWorkingDirectoryPath, inputFile);
-  const inputFileContent = await fs.readFile(inputFilePath, 'utf8');
-  const inputFileJsonContent: {
-    results: InputResult[];
-  } = JSON.parse(inputFileContent);
-
-  const outputDirectoryPath = path.resolve(
-    currentWorkingDirectoryPath,
-    outputDirectory,
-  );
+  const inputFileJsonContent = await getInputFileContent({
+    inputFile,
+  });
 
   const modules = getModules({ inputResults: inputFileJsonContent.results });
 
   let modulesWithChanges: ModuleCollection | undefined;
 
   if (inputFileWithChanges) {
-    const inputFilePathWithChanges = path.resolve(
-      currentWorkingDirectoryPath,
-      inputFileWithChanges,
-    );
-    const inputFileContentWithChanges = await fs.readFile(
-      inputFilePathWithChanges,
-      'utf8',
-    );
-    const inputFileJsonContentWithChanges: {
-      results: InputResult[];
-    } = JSON.parse(inputFileContentWithChanges);
+    const inputFileJsonContentWithChanges = await getInputFileContent({
+      inputFile: inputFileWithChanges,
+    });
     modulesWithChanges = getModules({
       inputResults: inputFileJsonContentWithChanges.results,
     });
@@ -52,10 +37,15 @@ export const nodeModulesCompare = async ({
     modulesWithChanges,
   };
 
+  const outputDirectoryPath = path.resolve(
+    currentWorkingDirectoryPath,
+    outputDirectory,
+  );
+
   createJsonFile({
     content: result,
     outputPath: `${outputDirectoryPath}/comparison-${Date.now()}.json`,
   });
 
-  return modules;
+  return result;
 };
