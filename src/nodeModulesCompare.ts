@@ -1,18 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
-
-export interface ModuleItem {
-  bundleDependants: string[];
-  size: number;
-}
-
-export type ModuleCollection = Record<string, ModuleItem>;
-
-interface InputResult {
-  bundleName: string;
-  files: Record<string, { size: number }>;
-}
+import { getModules } from './lib/getModules';
+import type { InputResult, ModuleCollection } from './types';
 
 export const nodeModulesCompare = async ({
   inputFile,
@@ -36,56 +26,34 @@ export const nodeModulesCompare = async ({
     outputDirectory,
   );
 
-  const modules = inputFileJsonContent.results.reduce(
-    (accumulator: ModuleCollection, current) => {
-      const updates: ModuleCollection = {};
-      for (const key of Object.keys(current.files)) {
-        if (
-          key === '[sourceMappingURL]' ||
-          key === '[unmapped]' ||
-          key === '[EOLs]' ||
-          key === '[no source]'
-        ) {
-          continue;
-        }
-        const moduleItem = current.files[key];
-        if (updates[key] && updates[key].size === moduleItem.size) {
-          updates[key].bundleDependants = [
-            ...updates[key].bundleDependants,
-            current.bundleName,
-          ];
-        } else if (
-          accumulator[key] &&
-          accumulator[key].size === moduleItem.size
-        ) {
-          updates[key] = {
-            ...accumulator[key],
-            bundleDependants: [
-              ...accumulator[key].bundleDependants,
-              current.bundleName,
-            ],
-          };
-        } else {
-          updates[key] = {
-            bundleDependants: [current.bundleName],
-            size: moduleItem.size,
-          };
-        }
-      }
-      return {
-        ...accumulator,
-        ...updates,
-      };
-    },
-    {},
-  );
+  const modules = getModules({ inputResults: inputFileJsonContent.results });
 
-  console.log('inputFileWithChanges', inputFileWithChanges);
+  let modulesWithChanges: ModuleCollection | undefined;
+
+  if (inputFileWithChanges) {
+    const inputFilePathWithChanges = path.resolve(
+      currentWorkingDirectoryPath,
+      inputFileWithChanges,
+    );
+    const inputFileContentWithChanges = await fs.readFile(
+      inputFilePathWithChanges,
+      'utf8',
+    );
+    const inputFileJsonContentWithChanges: {
+      results: InputResult[];
+    } = JSON.parse(inputFileContentWithChanges);
+    modulesWithChanges = getModules({
+      inputResults: inputFileJsonContentWithChanges.results,
+    });
+  }
+
+  const result = {
+    modules,
+    modulesWithChanges,
+  };
 
   createJsonFile({
-    content: {
-      modules,
-    },
+    content: result,
     outputPath: `${outputDirectoryPath}/comparison-${Date.now()}.json`,
   });
 
