@@ -2,7 +2,6 @@ import fs from 'node:fs/promises';
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
 
-
 export interface ModuleItem {
   bundleDependants: string[];
   size: number;
