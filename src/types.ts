@@ -8,4 +8,10 @@ export interface ModuleItem {
   size: number;
 }
 
+export interface ModuleItemWithId extends ModuleItem {
+  _id: string;
+}
+
 export type ModuleCollection = Record<string, ModuleItem>;
+
+export type ModuleCollectionWithIds = Record<string, ModuleItemWithId>;
