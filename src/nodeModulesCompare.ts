@@ -2,12 +2,13 @@ import fs from 'node:fs/promises';
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
 
-interface ModuleItem {
+
+export interface ModuleItem {
   bundleDependants: string[];
   size: number;
 }
 
-type ModuleCollection = Record<string, ModuleItem>;
+export type ModuleCollection = Record<string, ModuleItem>;
 
 interface InputResult {
   bundleName: string;
@@ -22,7 +23,7 @@ export const nodeModulesCompare = async ({
   inputFile: string;
   inputFileWithChanges?: string;
   outputDirectory?: string;
-}) => {
+}): Promise<ModuleCollection> => {
   const currentWorkingDirectoryPath = process.cwd();
 
   const inputFilePath = path.resolve(currentWorkingDirectoryPath, inputFile);
@@ -86,4 +87,6 @@ export const nodeModulesCompare = async ({
     },
     outputPath: `${outputDirectoryPath}/comparison-${Date.now()}.json`,
   });
+
+  return modules;
 };
