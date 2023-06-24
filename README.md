@@ -19,5 +19,6 @@ source-map-explorer ../foo/src/docker/foo-nginx/next-js/.next/static/**/*.js \
 ```bash
 npm run node-modules-compare -- \
   --inputFile './output/result.json' \
+  --inputFileWithChanges './output/result2.json' \
   --outputDirectory './output'
 ```

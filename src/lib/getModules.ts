@@ -17,7 +17,8 @@ export const getModules = ({
           key === '[sourceMappingURL]' ||
           key === '[unmapped]' ||
           key === '[EOLs]' ||
-          key === '[no source]'
+          key === '[no source]' ||
+          !key.includes('node_modules')
         ) {
           continue;
         }
