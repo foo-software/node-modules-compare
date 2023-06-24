@@ -80,6 +80,8 @@ export const nodeModulesCompare = async ({
     {},
   );
 
+  console.log('inputFileWithChanges', inputFileWithChanges);
+
   createJsonFile({
     content: {
       modules,
