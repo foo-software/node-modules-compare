@@ -1,4 +1,4 @@
-# @foo-software/node-modules-compare
+# `@foo-software/node-modules-compare`
 
 A tool to compare imported `node_modules` existence and size from one build to another
 
