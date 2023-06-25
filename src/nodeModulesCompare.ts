@@ -8,10 +8,12 @@ import type { ModuleCollection, NodeModulesCompareResult } from './types';
 export const nodeModulesCompare = async ({
   inputFile,
   inputFileWithChanges,
+  onlyNodeModules = true,
   outputDirectory = './',
 }: {
   inputFile: string;
   inputFileWithChanges?: string;
+  onlyNodeModules?: boolean;
   outputDirectory?: string;
 }): Promise<NodeModulesCompareResult> => {
   const currentWorkingDirectoryPath = process.cwd();
@@ -20,7 +22,10 @@ export const nodeModulesCompare = async ({
     inputFile,
   });
 
-  const modules = getModules({ inputResults: inputFileJsonContent.results });
+  const modules = getModules({
+    inputResults: inputFileJsonContent.results,
+    onlyNodeModules,
+  });
 
   let modulesWithChanges: ModuleCollection | undefined;
 
@@ -30,6 +35,7 @@ export const nodeModulesCompare = async ({
     });
     modulesWithChanges = getModules({
       inputResults: inputFileJsonContentWithChanges.results,
+      onlyNodeModules,
     });
   }
 

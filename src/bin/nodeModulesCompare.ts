@@ -16,13 +16,17 @@ const cli = meow({
     inputFileWithChanges: {
       type: 'string',
     },
+    onlyNodeModules: {
+      type: 'boolean',
+    },
     outputDirectory: {
       type: 'string',
     },
   },
 });
 
-const { inputFile, inputFileWithChanges, outputDirectory } = cli.flags;
+const { inputFile, inputFileWithChanges, onlyNodeModules, outputDirectory } =
+  cli.flags;
 
 console.log(
   `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
@@ -31,5 +35,6 @@ console.log(
 nodeModulesCompare({
   inputFile,
   inputFileWithChanges,
+  onlyNodeModules,
   outputDirectory,
 });

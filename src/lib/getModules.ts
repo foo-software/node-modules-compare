@@ -2,8 +2,10 @@ import type { InputResult, ModuleCollection } from '../types';
 
 export const getModules = ({
   inputResults,
+  onlyNodeModules,
 }: {
   inputResults: InputResult[];
+  onlyNodeModules?: boolean;
 }): ModuleCollection => {
   const result = inputResults.reduce(
     (accumulator: ModuleCollection, current) => {
@@ -14,7 +16,7 @@ export const getModules = ({
           key === '[unmapped]' ||
           key === '[EOLs]' ||
           key === '[no source]' ||
-          !key.includes('node_modules')
+          (!!onlyNodeModules && !key.includes('node_modules'))
         ) {
           continue;
         }
