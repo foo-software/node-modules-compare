@@ -1,6 +1,7 @@
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
 import { getInputFileContent } from './lib/getInputFileContent';
+import { getModuleCollectionDiff } from './lib/getModuleCollectionDiff';
 import { getModules } from './lib/getModules';
 import type { ModuleCollection, NodeModulesCompareResult } from './types';
 
@@ -33,6 +34,9 @@ export const nodeModulesCompare = async ({
   }
 
   const result = {
+    diff: !modulesWithChanges
+      ? undefined
+      : getModuleCollectionDiff(modules, modulesWithChanges),
     modules,
     modulesWithChanges,
   };

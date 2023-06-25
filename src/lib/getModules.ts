@@ -1,8 +1,4 @@
-import type {
-  InputResult,
-  ModuleCollection,
-  ModuleCollectionWithIds,
-} from '../types';
+import type { InputResult, ModuleCollection } from '../types';
 
 export const getModules = ({
   inputResults,
@@ -10,8 +6,8 @@ export const getModules = ({
   inputResults: InputResult[];
 }): ModuleCollection => {
   const result = inputResults.reduce(
-    (accumulator: ModuleCollectionWithIds, current) => {
-      const updates: ModuleCollectionWithIds = {};
+    (accumulator: ModuleCollection, current) => {
+      const updates: ModuleCollection = {};
       for (const key of Object.keys(current.files)) {
         if (
           key === '[sourceMappingURL]' ||
@@ -41,8 +37,8 @@ export const getModules = ({
           };
         } else {
           updates[key] = {
-            _id: key,
             bundleDependants: [current.bundleName],
+            file: key,
             size: moduleItem.size,
           };
         }
@@ -60,10 +56,9 @@ export const getModules = ({
   values.sort((a, b) => (a.size < b.size ? 1 : -1));
 
   return values.reduce((accumulator: ModuleCollection, current) => {
-    const { _id, ...rest } = current;
     return {
       ...accumulator,
-      [_id]: rest,
+      [current.file]: current,
     };
   }, {});
 };
