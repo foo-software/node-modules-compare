@@ -8,8 +8,13 @@ export interface InputFileContent {
 }
 
 export interface ModuleItem {
+  /** Bundles that depend on the module being analyzed */
   bundleDependants: string[];
+
+  /** The file path or id of the module */
   file: string;
+
+  /** The size in bytes of the module */
   size: number;
 }
 

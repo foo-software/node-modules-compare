@@ -38,7 +38,7 @@ export const getModuleCollectionDiff = (
       ) {
         diff = {
           ...initialDiff,
-          size:
+          bundleDependantCount:
             moduleItemB.bundleDependants.length -
             moduleItemA.bundleDependants.length,
         };
