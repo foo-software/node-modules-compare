@@ -46,7 +46,15 @@ export interface NodeModulesDiff {
 }
 
 export interface NodeModulesCompareResult {
+  /** The difference between original and changed modules */
   diff?: NodeModulesDiff;
+
+  /** A collection dataset of modules and corresponding data */
   modules: ModuleCollection;
+
+  /** A collection dataset of newer modules that may have changed and corresponding data */
   modulesWithChanges?: ModuleCollection;
+
+  /** File path the result is written to */
+  resultFilePath?: string;
 }

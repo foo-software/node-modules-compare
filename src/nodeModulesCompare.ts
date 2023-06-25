@@ -9,7 +9,7 @@ export const nodeModulesCompare = async ({
   inputFile,
   inputFileWithChanges,
   onlyNodeModules = true,
-  outputDirectory = './',
+  outputDirectory,
 }: {
   inputFile: string;
   inputFileWithChanges?: string;
@@ -47,15 +47,23 @@ export const nodeModulesCompare = async ({
     modulesWithChanges,
   };
 
-  const outputDirectoryPath = path.resolve(
-    currentWorkingDirectoryPath,
-    outputDirectory,
-  );
+  let resultFilePath: string | undefined;
+  if (outputDirectory) {
+    const outputDirectoryPath = path.resolve(
+      currentWorkingDirectoryPath,
+      outputDirectory,
+    );
 
-  createJsonFile({
-    content: result,
-    outputPath: `${outputDirectoryPath}/comparison-${Date.now()}.json`,
-  });
+    resultFilePath = `${outputDirectoryPath}/comparison-${Date.now()}.json`;
 
-  return result;
+    createJsonFile({
+      content: result,
+      outputPath: resultFilePath,
+    });
+  }
+
+  return {
+    ...result,
+    resultFilePath,
+  };
 };
