@@ -12,9 +12,16 @@ export const nodeModulesCompare = async ({
   outputDirectory,
   shouldOmitNodeModuleData,
 }: {
+  /** The input file path relative to current working directory */
   inputFile: string;
+
+  /** The input file with changes path relative to current working directory */
   inputFileWithChanges?: string;
+
+  /** The output directory path relative to current working directory */
   outputDirectory?: string;
+
+  /** If `true` node module data will be ommitted from the resulting dataset */
   shouldOmitNodeModuleData?: boolean;
 }): Promise<NodeModulesCompareResult> => {
   const currentWorkingDirectoryPath = process.cwd();
