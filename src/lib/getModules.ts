@@ -22,8 +22,8 @@ export const getModules = ({
         }
         const moduleItem = current.files[key];
         if (updates[key] && updates[key].size === moduleItem.size) {
-          updates[key].bundleDependants = [
-            ...updates[key].bundleDependants,
+          updates[key].bundleDependents = [
+            ...updates[key].bundleDependents,
             current.bundleName,
           ];
         } else if (
@@ -32,14 +32,14 @@ export const getModules = ({
         ) {
           updates[key] = {
             ...accumulator[key],
-            bundleDependants: [
-              ...accumulator[key].bundleDependants,
+            bundleDependents: [
+              ...accumulator[key].bundleDependents,
               current.bundleName,
             ],
           };
         } else {
           updates[key] = {
-            bundleDependants: [current.bundleName],
+            bundleDependents: [current.bundleName],
             file: key,
             size: moduleItem.size,
           };

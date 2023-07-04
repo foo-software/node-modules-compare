@@ -1,20 +1,21 @@
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
 import { getInputFileContent } from './lib/getInputFileContent';
-import { getModuleCollectionDiff } from './lib/getModuleCollectionDiff';
 import { getModules } from './lib/getModules';
-import type { ModuleCollection, NodeModulesCompareResult } from './types';
+import { getNodeModuleCollectionDiff } from './lib/getNodeModuleCollectionDiff';
+import { getNodeModules } from './lib/getNodeModules';
+import type { NodeModuleCollection, NodeModulesCompareResult } from './types';
 
 export const nodeModulesCompare = async ({
   inputFile,
   inputFileWithChanges,
-  onlyNodeModules = true,
   outputDirectory,
+  shouldOmitNodeModuleData,
 }: {
   inputFile: string;
   inputFileWithChanges?: string;
-  onlyNodeModules?: boolean;
   outputDirectory?: string;
+  shouldOmitNodeModuleData?: boolean;
 }): Promise<NodeModulesCompareResult> => {
   const currentWorkingDirectoryPath = process.cwd();
 
@@ -24,28 +25,36 @@ export const nodeModulesCompare = async ({
 
   const modules = getModules({
     inputResults: inputFileJsonContent.results,
-    onlyNodeModules,
+    onlyNodeModules: true,
+  });
+  const nodeModules = getNodeModules({
+    modules,
   });
 
-  let modulesWithChanges: ModuleCollection | undefined;
-
+  let nodeModulesWithChanges: NodeModuleCollection | undefined;
   if (inputFileWithChanges) {
     const inputFileJsonContentWithChanges = await getInputFileContent({
       inputFile: inputFileWithChanges,
     });
-    modulesWithChanges = getModules({
+    const modulesWithChanges = getModules({
       inputResults: inputFileJsonContentWithChanges.results,
-      onlyNodeModules,
+      onlyNodeModules: true,
+    });
+    nodeModulesWithChanges = getNodeModules({
+      modules: modulesWithChanges,
     });
   }
 
-  const result = {
-    diff: !modulesWithChanges
+  const result: NodeModulesCompareResult = {
+    diff: !nodeModulesWithChanges
       ? undefined
-      : getModuleCollectionDiff(modules, modulesWithChanges),
-    modules,
-    modulesWithChanges,
+      : getNodeModuleCollectionDiff(nodeModules, nodeModulesWithChanges),
   };
+
+  if (!shouldOmitNodeModuleData) {
+    result.nodeModules = nodeModules;
+    result.nodeModulesWithChanges = nodeModulesWithChanges;
+  }
 
   let resultFilePath: string | undefined;
   if (outputDirectory) {

@@ -16,17 +16,21 @@ const cli = meow({
     inputFileWithChanges: {
       type: 'string',
     },
-    onlyNodeModules: {
-      type: 'boolean',
-    },
     outputDirectory: {
       type: 'string',
+    },
+    shouldOmitNodeModuleData: {
+      type: 'boolean',
     },
   },
 });
 
-const { inputFile, inputFileWithChanges, onlyNodeModules, outputDirectory } =
-  cli.flags;
+const {
+  inputFile,
+  inputFileWithChanges,
+  outputDirectory,
+  shouldOmitNodeModuleData,
+} = cli.flags;
 
 console.log(
   `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
@@ -36,23 +40,23 @@ const runNodeModulesCompare = async () => {
   const result = await nodeModulesCompare({
     inputFile,
     inputFileWithChanges,
-    onlyNodeModules,
     outputDirectory,
+    shouldOmitNodeModuleData,
   });
 
   if (result.resultFilePath) {
     console.log(` - result path:`, result.resultFilePath);
   }
-  if (result.modules) {
+  if (result.nodeModules) {
     console.log(
       ` - module files analyzed:`,
-      Object.keys(result.modules).length,
+      Object.keys(result.nodeModules).length,
     );
   }
-  if (result.modulesWithChanges) {
+  if (result.nodeModulesWithChanges) {
     console.log(
       ` - newer module files analyzed:`,
-      Object.keys(result.modulesWithChanges).length,
+      Object.keys(result.nodeModulesWithChanges).length,
     );
   }
 
@@ -62,7 +66,7 @@ const runNodeModulesCompare = async () => {
     console.log(`   - added:`, result.diff.added.length);
     console.log(`   - changed:`, result.diff.changed.length);
     console.log(`   - removed:`, result.diff.removed.length);
-  } else if (result.modulesWithChanges) {
+  } else if (result.nodeModulesWithChanges) {
     console.log(` - no diff was found`);
   }
 };
