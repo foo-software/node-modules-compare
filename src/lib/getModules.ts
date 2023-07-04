@@ -2,8 +2,10 @@ import type { InputResult, ModuleCollection } from '../types';
 
 export const getModules = ({
   inputResults,
+  onlyNodeModules,
 }: {
   inputResults: InputResult[];
+  onlyNodeModules?: boolean;
 }): ModuleCollection => {
   const result = inputResults.reduce(
     (accumulator: ModuleCollection, current) => {
@@ -14,14 +16,14 @@ export const getModules = ({
           key === '[unmapped]' ||
           key === '[EOLs]' ||
           key === '[no source]' ||
-          !key.includes('node_modules')
+          (!!onlyNodeModules && !key.includes('node_modules'))
         ) {
           continue;
         }
         const moduleItem = current.files[key];
         if (updates[key] && updates[key].size === moduleItem.size) {
-          updates[key].bundleDependants = [
-            ...updates[key].bundleDependants,
+          updates[key].bundleDependents = [
+            ...updates[key].bundleDependents,
             current.bundleName,
           ];
         } else if (
@@ -30,14 +32,14 @@ export const getModules = ({
         ) {
           updates[key] = {
             ...accumulator[key],
-            bundleDependants: [
-              ...accumulator[key].bundleDependants,
+            bundleDependents: [
+              ...accumulator[key].bundleDependents,
               current.bundleName,
             ],
           };
         } else {
           updates[key] = {
-            bundleDependants: [current.bundleName],
+            bundleDependents: [current.bundleName],
             file: key,
             size: moduleItem.size,
           };

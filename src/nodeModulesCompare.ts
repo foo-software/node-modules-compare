@@ -1,18 +1,28 @@
 import path from 'path';
 import { createJsonFile } from './lib/createJsonFile';
 import { getInputFileContent } from './lib/getInputFileContent';
-import { getModuleCollectionDiff } from './lib/getModuleCollectionDiff';
 import { getModules } from './lib/getModules';
-import type { ModuleCollection, NodeModulesCompareResult } from './types';
+import { getNodeModuleCollectionDiff } from './lib/getNodeModuleCollectionDiff';
+import { getNodeModules } from './lib/getNodeModules';
+import type { NodeModuleCollection, NodeModulesCompareResult } from './types';
 
 export const nodeModulesCompare = async ({
   inputFile,
   inputFileWithChanges,
-  outputDirectory = './',
+  outputDirectory,
+  shouldOmitNodeModuleData,
 }: {
+  /** The input file path relative to current working directory */
   inputFile: string;
+
+  /** The input file with changes path relative to current working directory */
   inputFileWithChanges?: string;
+
+  /** The output directory path relative to current working directory */
   outputDirectory?: string;
+
+  /** If `true` node module data will be ommitted from the resulting dataset */
+  shouldOmitNodeModuleData?: boolean;
 }): Promise<NodeModulesCompareResult> => {
   const currentWorkingDirectoryPath = process.cwd();
 
@@ -20,36 +30,56 @@ export const nodeModulesCompare = async ({
     inputFile,
   });
 
-  const modules = getModules({ inputResults: inputFileJsonContent.results });
+  const modules = getModules({
+    inputResults: inputFileJsonContent.results,
+    onlyNodeModules: true,
+  });
+  const nodeModules = getNodeModules({
+    modules,
+  });
 
-  let modulesWithChanges: ModuleCollection | undefined;
-
+  let nodeModulesWithChanges: NodeModuleCollection | undefined;
   if (inputFileWithChanges) {
     const inputFileJsonContentWithChanges = await getInputFileContent({
       inputFile: inputFileWithChanges,
     });
-    modulesWithChanges = getModules({
+    const modulesWithChanges = getModules({
       inputResults: inputFileJsonContentWithChanges.results,
+      onlyNodeModules: true,
+    });
+    nodeModulesWithChanges = getNodeModules({
+      modules: modulesWithChanges,
     });
   }
 
-  const result = {
-    diff: !modulesWithChanges
+  const result: NodeModulesCompareResult = {
+    diff: !nodeModulesWithChanges
       ? undefined
-      : getModuleCollectionDiff(modules, modulesWithChanges),
-    modules,
-    modulesWithChanges,
+      : getNodeModuleCollectionDiff(nodeModules, nodeModulesWithChanges),
   };
 
-  const outputDirectoryPath = path.resolve(
-    currentWorkingDirectoryPath,
-    outputDirectory,
-  );
+  if (!shouldOmitNodeModuleData) {
+    result.nodeModules = nodeModules;
+    result.nodeModulesWithChanges = nodeModulesWithChanges;
+  }
 
-  createJsonFile({
-    content: result,
-    outputPath: `${outputDirectoryPath}/comparison-${Date.now()}.json`,
-  });
+  let resultFilePath: string | undefined;
+  if (outputDirectory) {
+    const outputDirectoryPath = path.resolve(
+      currentWorkingDirectoryPath,
+      outputDirectory,
+    );
 
-  return result;
+    resultFilePath = `${outputDirectoryPath}/comparison-${Date.now()}.json`;
+
+    createJsonFile({
+      content: result,
+      outputPath: resultFilePath,
+    });
+  }
+
+  return {
+    ...result,
+    resultFilePath,
+  };
 };

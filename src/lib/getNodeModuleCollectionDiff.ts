@@ -1,12 +1,12 @@
 import type {
-  ModuleCollection,
-  ModuleItemDiff,
+  NodeModuleCollection,
+  NodeModuleItemDiff,
   NodeModulesDiff,
 } from '../types';
 
-export const getModuleCollectionDiff = (
-  moduleCollectionA: ModuleCollection,
-  moduleCollectionB: ModuleCollection,
+export const getNodeModuleCollectionDiff = (
+  moduleCollectionA: NodeModuleCollection,
+  moduleCollectionB: NodeModuleCollection,
 ): NodeModulesDiff | undefined => {
   const added = [];
   const changed = [];
@@ -26,21 +26,32 @@ export const getModuleCollectionDiff = (
     } else {
       // check if changed
       const moduleItemA = moduleCollectionA[key];
-      let diff: ModuleItemDiff | undefined;
+      let diff: NodeModuleItemDiff | undefined;
       const initialDiff = {
-        bundleDependantCount: 0,
-        file: key,
+        bundleDependentCount: 0,
+        fileCount: 0,
+        packageName: moduleItemB.packageName,
         size: 0,
       };
+      const moduleItemABundleDependentsCount = Object.keys(
+        moduleItemA.bundleDependents,
+      ).length;
+      const moduleItemBBundleDependentsCount = Object.keys(
+        moduleItemB.bundleDependents,
+      ).length;
       if (
-        moduleItemA.bundleDependants.length !==
-        moduleItemB.bundleDependants.length
+        moduleItemABundleDependentsCount !== moduleItemBBundleDependentsCount
       ) {
         diff = {
           ...initialDiff,
-          bundleDependantCount:
-            moduleItemB.bundleDependants.length -
-            moduleItemA.bundleDependants.length,
+          bundleDependentCount:
+            moduleItemBBundleDependentsCount - moduleItemABundleDependentsCount,
+        };
+      }
+      if (moduleItemA.files.length !== moduleItemB.files.length) {
+        diff = {
+          ...initialDiff,
+          fileCount: moduleItemB.files.length - moduleItemA.files.length,
         };
       }
       if (moduleItemA.size !== moduleItemB.size) {
