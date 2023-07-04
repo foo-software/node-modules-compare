@@ -1,10 +1,10 @@
-export interface InputResult {
+export interface InputPayload {
   bundleName: string;
   files: Record<string, { size: number }>;
 }
 
 export interface InputFileContent {
-  results: InputResult[];
+  results: InputPayload[];
 }
 
 export interface ModuleItem {

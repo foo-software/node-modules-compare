@@ -1,7 +1,7 @@
-import { InputResult } from '../types';
+import { InputPayload } from '../types';
 import { getModules } from './getModules';
 
-const mockResults: InputResult[] = [
+const mockResults: InputPayload[] = [
   {
     bundleName: 'chunks/abc.123.js',
     files: {

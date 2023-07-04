@@ -1,10 +1,10 @@
-import type { InputResult, ModuleCollection } from '../types';
+import type { InputPayload, ModuleCollection } from '../types';
 
 export const getModules = ({
   inputResults,
   onlyNodeModules,
 }: {
-  inputResults: InputResult[];
+  inputResults: InputPayload[];
   onlyNodeModules?: boolean;
 }): ModuleCollection => {
   const result = inputResults.reduce(
