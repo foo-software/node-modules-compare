@@ -1,9 +1,9 @@
 import path from 'path';
-import { createJsonFile } from './lib/createJsonFile';
-import { getInputFileContent } from './lib/getInputFileContent';
-import { getModules } from './lib/getModules';
-import { getNodeModuleCollectionDiff } from './lib/getNodeModuleCollectionDiff';
-import { getNodeModules } from './lib/getNodeModules';
+import { createJsonFile } from './lib/createJsonFile.js';
+import { getInputFileContent } from './lib/getInputFileContent.js';
+import { getModules } from './lib/getModules.js';
+import { getNodeModuleCollectionDiff } from './lib/getNodeModuleCollectionDiff.js';
+import { getNodeModules } from './lib/getNodeModules.js';
 import type {
   NodeModulesCompareInputPayload,
   NodeModuleCollection,

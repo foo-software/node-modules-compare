@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import meow from 'meow';
-// import { getPackage } from '../lib/getPackage';
-import { nodeModulesCompare } from '../nodeModulesCompare';
+import { getPackage } from '../lib/getPackage.js';
+import { nodeModulesCompare } from '../nodeModulesCompare.js';
 
-// const packageContent = await getPackage();
-// const packageContentParsed = JSON.parse(packageContent);
+const packageContent = await getPackage();
+const packageContentParsed = JSON.parse(packageContent);
 
 const cli = meow({
   importMeta: import.meta,
@@ -37,9 +37,9 @@ const {
 } = cli.flags;
 
 const runNodeModulesCompare = async () => {
-  // console.log(
-  //   `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
-  // );
+  console.log(
+    `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
+  );
 
   const result = await nodeModulesCompare({
     inputFile,

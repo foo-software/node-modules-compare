@@ -3,7 +3,7 @@ import type {
   NodeModuleCollection,
   ModuleCollection,
 } from '../types';
-import { getNodeModulePackageName } from './getNodeModulePackageName';
+import { getNodeModulePackageName } from './getNodeModulePackageName.js';
 
 const getBundleDependents = ({
   bundles,

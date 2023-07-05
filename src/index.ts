@@ -1,4 +1,4 @@
-import { nodeModulesCompare } from './nodeModulesCompare';
+import { nodeModulesCompare } from './nodeModulesCompare.js';
 
 export type {
   NodeModulesCompareInputPayload,

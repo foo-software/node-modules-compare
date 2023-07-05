@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { createDirectory } from './createDirectory';
+import { createDirectory } from './createDirectory.js';
 
 export const createJsonFile = ({
   content,
