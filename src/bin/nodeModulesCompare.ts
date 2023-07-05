@@ -9,6 +9,9 @@ const packageContentParsed = JSON.parse(packageContent);
 const cli = meow({
   importMeta: import.meta,
   flags: {
+    help: {
+      type: 'boolean',
+    },
     inputFile: {
       isRequired: true,
       type: 'string',
@@ -26,17 +29,18 @@ const cli = meow({
 });
 
 const {
+  help,
   inputFile,
   inputFileWithChanges,
   outputDirectory,
   shouldOmitNodeModuleData,
 } = cli.flags;
 
-console.log(
-  `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
-);
-
 const runNodeModulesCompare = async () => {
+  console.log(
+    `running ${packageContentParsed.name}@${packageContentParsed.version} ✨`,
+  );
+
   const result = await nodeModulesCompare({
     inputFile,
     inputFileWithChanges,
@@ -71,4 +75,11 @@ const runNodeModulesCompare = async () => {
   }
 };
 
-runNodeModulesCompare();
+if (help) {
+  console.log(
+    `Please refer to GitHub for options: ` +
+      `  https://github.com/foo-software/node-modules-compare/tree/main#usage-options`,
+  );
+} else {
+  runNodeModulesCompare();
+}
