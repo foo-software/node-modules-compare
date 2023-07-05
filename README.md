@@ -40,7 +40,7 @@ const logNodeModulesCompareResult = async () => {
 #### Usage: CLI
 
 ```bash
-node-modules-compare -- \
+node-modules-compare \
   --inputFile '/path/to/input/input-file.json' \
   --inputFileWithChanges '/path/to/input/input-file-with-changes.json' \
   --outputDirectory '/path/to/output'
