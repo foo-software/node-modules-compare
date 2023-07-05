@@ -16,6 +16,7 @@
     "node-modules-compare": "ts-node-esm --experimental-specifier-resolution=node src/bin/nodeModulesCompare.ts",
     "build": "tsc",
     "lint": "eslint",
+    "prepublish": "npm run build",
     "prettier": "prettier --write '**/*.{ts,tsx}'",
     "prepare": "husky install",
     "test": "jest"
