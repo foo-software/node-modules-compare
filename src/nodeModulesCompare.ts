@@ -5,7 +5,7 @@ import { getModules } from './lib/getModules';
 import { getNodeModuleCollectionDiff } from './lib/getNodeModuleCollectionDiff';
 import { getNodeModules } from './lib/getNodeModules';
 import type {
-  InputPayload,
+  NodeModulesCompareInputPayload,
   NodeModuleCollection,
   NodeModulesCompareResult,
 } from './types';
@@ -19,7 +19,7 @@ export const nodeModulesCompare = async ({
   shouldOmitNodeModuleData,
 }: {
   /** The input payload (if not using `inputFile`) */
-  input?: InputPayload[];
+  input?: NodeModulesCompareInputPayload[];
 
   /** The input file path relative to current working directory (if not using `input` param) */
   inputFile?: string;
@@ -28,7 +28,7 @@ export const nodeModulesCompare = async ({
   inputFileWithChanges?: string;
 
   /** The input with changes payload (if not using `inputFileWithChanges`) */
-  inputWithChanges?: InputPayload[];
+  inputWithChanges?: NodeModulesCompareInputPayload[];
 
   /** The output directory path relative to current working directory. If `undefined`, file will not be output */
   outputDirectory?: string;
@@ -43,7 +43,7 @@ export const nodeModulesCompare = async ({
 
   const currentWorkingDirectoryPath = process.cwd();
 
-  let inputResults: InputPayload[] | undefined = input;
+  let inputResults: NodeModulesCompareInputPayload[] | undefined = input;
   if (!inputResults && inputFile) {
     const inputFileJsonContent = await getInputFileContent({
       inputFile,
@@ -67,7 +67,8 @@ export const nodeModulesCompare = async ({
 
   let nodeModulesWithChanges: NodeModuleCollection | undefined;
   if (inputWithChanges || inputFileWithChanges) {
-    let inputResultsWithChanges: InputPayload[] | undefined = inputWithChanges;
+    let inputResultsWithChanges: NodeModulesCompareInputPayload[] | undefined =
+      inputWithChanges;
     if (!inputResultsWithChanges && inputFileWithChanges) {
       const inputFileJsonContentWithChanges = await getInputFileContent({
         inputFile: inputFileWithChanges,

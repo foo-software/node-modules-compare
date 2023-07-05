@@ -1,2 +1,15 @@
-export { nodeModulesCompare as default } from './nodeModulesCompare';
-export type { ModuleCollection, ModuleItem } from './types';
+import { nodeModulesCompare } from './nodeModulesCompare';
+
+export type {
+  NodeModulesCompareInputPayload,
+  NodeModuleBundleDependent,
+  NodeModuleBundleDependentCollection,
+  NodeModuleItem,
+  NodeModuleCollection,
+  NodeModuleItemDiff,
+  NodeModulesDiff,
+  NodeModulesCompareResult,
+} from './types';
+
+export { nodeModulesCompare };
+export default nodeModulesCompare;

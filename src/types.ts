@@ -1,10 +1,10 @@
-export interface InputPayload {
+export interface NodeModulesCompareInputPayload {
   bundleName: string;
   files: Record<string, { size: number }>;
 }
 
 export interface InputFileContent {
-  results: InputPayload[];
+  results: NodeModulesCompareInputPayload[];
 }
 
 export interface ModuleItem {

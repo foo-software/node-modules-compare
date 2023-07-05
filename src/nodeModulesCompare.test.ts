@@ -1,7 +1,7 @@
 import { nodeModulesCompare } from './nodeModulesCompare';
-import { InputPayload } from './types';
+import { NodeModulesCompareInputPayload } from './types';
 
-const mockInputBase: InputPayload[] = [
+const mockInputBase: NodeModulesCompareInputPayload[] = [
   {
     bundleName: './dist/chunks/abc.js',
     files: {
@@ -39,7 +39,7 @@ const mockInputBase: InputPayload[] = [
   },
 ];
 
-const mockInputBase2: InputPayload[] = [
+const mockInputBase2: NodeModulesCompareInputPayload[] = [
   ...mockInputBase,
   {
     bundleName: './dist/chunks/def.js',
@@ -57,7 +57,7 @@ const mockInputBase2: InputPayload[] = [
   },
 ];
 
-const mockInputBase3: InputPayload[] = [
+const mockInputBase3: NodeModulesCompareInputPayload[] = [
   ...mockInputBase2,
   {
     bundleName: './dist/chunks/def.js',
@@ -69,7 +69,7 @@ const mockInputBase3: InputPayload[] = [
   },
 ];
 
-const mockInput: InputPayload[] = [
+const mockInput: NodeModulesCompareInputPayload[] = [
   ...mockInputBase3,
   {
     bundleName: './dist/chunks/hij.js',
