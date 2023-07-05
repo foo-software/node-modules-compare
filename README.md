@@ -50,7 +50,7 @@ node-modules-compare -- \
 
 Either `input` or `inputFile` must be provided.
 
-**Option interfaces**
+**Option Interfaces**
 
 The interfaces below are used in various options.
 
@@ -73,7 +73,7 @@ type input = NodeModulesCompareInputPayload[] | undefined;
 
 **`options.inputFile`**
 
-The input file path relative to current working directory (if not using `input` param)
+The input file path relative to current working directory (if not using `input` param).
 
 ```typescript
 type inputFile = string | undefined;
@@ -107,7 +107,7 @@ type outputDirectory = string | undefined;
 
 **`options.shouldOmitNodeModuleData`**
 
-If `true` node module data will be ommitted from the resulting dataset
+If `true` node module data will be ommitted from the resulting dataset.
 
 ```typescript
 type shouldOmitNodeModuleData = boolean | undefined;
