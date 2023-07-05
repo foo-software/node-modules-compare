@@ -1,7 +1,5 @@
 # `@foo-software/node-modules-compare`
 
-**DISCLAIMER:** This project is in its early phases and not ready for use.
-
 A tool to compare imported `node_modules` existence and size from one build to another.
 
 ## Prerequisites
