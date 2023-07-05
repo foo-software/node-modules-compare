@@ -6,7 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/foo-software/node-modules-compare.git"
   },
-  "bin": "dist/bin/nodeModulesCompare.js",
+  "bin": {
+    "node-modules-compare": "dist/bin/nodeModulesCompare.js"
+  },
   "scripts": {
     "node-modules-compare": "ts-node-esm --experimental-specifier-resolution=node src/bin/nodeModulesCompare.ts",
     "build": "tsc",
