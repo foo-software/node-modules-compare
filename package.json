@@ -1,7 +1,7 @@
 {
   "name": "@foo-software/node-modules-compare",
   "description": "A tool to compare imported `node_modules` existence and size from one build to another",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
