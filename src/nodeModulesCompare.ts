@@ -22,7 +22,7 @@ export const nodeModulesCompare = async ({
   input?: InputPayload[];
 
   /** The input file path relative to current working directory (if not using `input` param) */
-  inputFile: string;
+  inputFile?: string;
 
   /** The input file with changes path relative to current working directory (if not using `inputWithChanges` param) */
   inputFileWithChanges?: string;
@@ -44,11 +44,17 @@ export const nodeModulesCompare = async ({
   const currentWorkingDirectoryPath = process.cwd();
 
   let inputResults: InputPayload[] | undefined = input;
-  if (!inputResults) {
+  if (!inputResults && inputFile) {
     const inputFileJsonContent = await getInputFileContent({
       inputFile,
     });
     inputResults = inputFileJsonContent.results;
+  }
+
+  if (!inputResults) {
+    throw new Error(
+      `There was a problem finding the input. Check that the input or input file is formatted correctly`,
+    );
   }
 
   const modules = getModules({
