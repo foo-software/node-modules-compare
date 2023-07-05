@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import meow from 'meow';
-import getPackage from '../lib/getPackage';
+import { getPackage } from '../lib/getPackage';
 import { nodeModulesCompare } from '../nodeModulesCompare';
 
 const packageContent = await getPackage();
