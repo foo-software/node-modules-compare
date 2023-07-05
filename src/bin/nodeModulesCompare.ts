@@ -9,11 +9,10 @@ const packageContentParsed = JSON.parse(packageContent);
 const cli = meow({
   importMeta: import.meta,
   flags: {
-    help: {
+    h: {
       type: 'boolean',
     },
     inputFile: {
-      isRequired: true,
       type: 'string',
     },
     inputFileWithChanges: {
@@ -29,7 +28,7 @@ const cli = meow({
 });
 
 const {
-  help,
+  h,
   inputFile,
   inputFileWithChanges,
   outputDirectory,
@@ -75,9 +74,9 @@ const runNodeModulesCompare = async () => {
   }
 };
 
-if (help) {
+if (h) {
   console.log(
-    `Please refer to GitHub for options: ` +
+    `Please refer to GitHub for options:\n` +
       `  https://github.com/foo-software/node-modules-compare/tree/main#usage-options`,
   );
 } else {
